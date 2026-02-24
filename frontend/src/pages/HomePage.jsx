@@ -176,13 +176,13 @@ export default function HomePage() {
                                     <Link
                                         key={product.id}
                                         to={`/products/${product.slug}`}
-                                        className="flex flex-col md:flex-row bg-white rounded-[24px] overflow-hidden border border-gray-100 hover:border-gray-200 hover:shadow-xl hover:shadow-black/5 transition-all duration-500 group"
+                                        className="flex flex-col md:flex-row bg-white rounded-[24px] overflow-hidden border border-gray-100 hover:border-gray-300 transition-all duration-300 group"
                                     >
-                                        <div className="w-full md:w-80 h-80 flex items-center justify-center p-8 bg-[#f5f5f7]/50 group-hover:bg-white transition-colors duration-500">
+                                        <div className="w-full md:w-80 h-80 flex items-center justify-center p-8 bg-[#f5f5f7]/50 transition-colors duration-500">
                                             <img
                                                 src={product.imageUrl}
                                                 alt={product.name}
-                                                className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out"
+                                                className="w-full h-full object-contain transition-transform duration-700 ease-out"
                                             />
                                         </div>
 

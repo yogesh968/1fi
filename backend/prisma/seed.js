@@ -2,7 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
-    console.log('Seeding database with premium assets...');
+    console.log('Seeding database with professional assets...');
 
     // Clear existing data
     await prisma.order.deleteMany();
@@ -16,34 +16,46 @@ async function main() {
             name: 'iPhone 17 Pro',
             slug: 'iphone-17-pro',
             description: 'The most powerful iPhone ever with A19 Pro chip, titanium design, and pro camera system.',
-            imageUrl: '/images/iphone-17-pro.png',
+            imageUrl: '/images/iphone-white.png',
             mrp: 134900,
             price: 127400,
             badge: 'NEW',
         },
     });
 
-    const iphone256 = await prisma.variant.create({
-        data: {
-            productId: iphone.id,
-            color: 'Deep Blue',
-            storage: '256GB',
-            priceOverride: 127400,
-            imageUrl: '/images/iphone-17-pro.png',
-        },
-    });
+    const colors = ['White', 'Orange', 'Blue'];
+    const storages = ['256GB', '512GB'];
+    const imageMap = {
+        'White': '/images/iphone-white.png',
+        'Orange': '/images/iphone-orange.png',
+        'Blue': '/images/iphone-blue.png'
+    };
 
-    await prisma.emiPlan.createMany({
-        data: [
-            { variantId: iphone256.id, monthlyAmount: 42467, tenureMonths: 3, interestRate: 0, cashbackAmount: 7500 },
-            { variantId: iphone256.id, monthlyAmount: 21234, tenureMonths: 6, interestRate: 0, cashbackAmount: 7500 },
-            { variantId: iphone256.id, monthlyAmount: 10617, tenureMonths: 12, interestRate: 0, cashbackAmount: 7500 },
-            { variantId: iphone256.id, monthlyAmount: 5621, tenureMonths: 24, interestRate: 0, cashbackAmount: 7500 },
-            { variantId: iphone256.id, monthlyAmount: 4297, tenureMonths: 36, interestRate: 10.5, cashbackAmount: 7500 },
-            { variantId: iphone256.id, monthlyAmount: 3385, tenureMonths: 48, interestRate: 10.5, cashbackAmount: 7500 },
-            { variantId: iphone256.id, monthlyAmount: 2842, tenureMonths: 60, interestRate: 10.5, cashbackAmount: 7500 },
-        ],
-    });
+    for (const color of colors) {
+        for (const storage of storages) {
+            const priceOverride = storage === '512GB' ? 147400 : 127400;
+            const variant = await prisma.variant.create({
+                data: {
+                    productId: iphone.id,
+                    color: color,
+                    storage: storage,
+                    priceOverride: priceOverride,
+                    imageUrl: imageMap[color],
+                },
+            });
+
+            await prisma.emiPlan.createMany({
+                data: [
+                    { variantId: variant.id, monthlyAmount: Math.round(priceOverride / 3), tenureMonths: 3, interestRate: 0, cashbackAmount: 7500 },
+                    { variantId: variant.id, monthlyAmount: Math.round(priceOverride / 6), tenureMonths: 6, interestRate: 0, cashbackAmount: 7500 },
+                    { variantId: variant.id, monthlyAmount: Math.round(priceOverride / 12), tenureMonths: 12, interestRate: 0, cashbackAmount: 7500 },
+                    { variantId: variant.id, monthlyAmount: Math.round(priceOverride / 24), tenureMonths: 24, interestRate: 0, cashbackAmount: 7500 },
+                    { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.1) / 36), tenureMonths: 36, interestRate: 10.5, cashbackAmount: 7500 },
+                    { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.15) / 48), tenureMonths: 48, interestRate: 10.5, cashbackAmount: 7500 },
+                ],
+            });
+        }
+    }
 
     // ── PRODUCT 2: Samsung Galaxy S25 Ultra ───────────────────────────────────
     const samsung = await prisma.product.create({
@@ -58,7 +70,7 @@ async function main() {
         },
     });
 
-    const samsung256 = await prisma.variant.create({
+    const samsungVariant = await prisma.variant.create({
         data: {
             productId: samsung.id,
             color: 'Titanium Black',
@@ -70,13 +82,9 @@ async function main() {
 
     await prisma.emiPlan.createMany({
         data: [
-            { variantId: samsung256.id, monthlyAmount: 41666, tenureMonths: 3, interestRate: 0, cashbackAmount: 6500 },
-            { variantId: samsung256.id, monthlyAmount: 20833, tenureMonths: 6, interestRate: 0, cashbackAmount: 6500 },
-            { variantId: samsung256.id, monthlyAmount: 10417, tenureMonths: 12, interestRate: 0, cashbackAmount: 6500 },
-            { variantId: samsung256.id, monthlyAmount: 5500, tenureMonths: 24, interestRate: 0, cashbackAmount: 6500 },
-            { variantId: samsung256.id, monthlyAmount: 4100, tenureMonths: 36, interestRate: 10.5, cashbackAmount: 6500 },
-            { variantId: samsung256.id, monthlyAmount: 3200, tenureMonths: 48, interestRate: 10.5, cashbackAmount: 6500 },
-            { variantId: samsung256.id, monthlyAmount: 2781, tenureMonths: 60, interestRate: 10.5, cashbackAmount: 6500 },
+            { variantId: samsungVariant.id, monthlyAmount: 41666, tenureMonths: 3, interestRate: 0, cashbackAmount: 6500 },
+            { variantId: samsungVariant.id, monthlyAmount: 20833, tenureMonths: 6, interestRate: 0, cashbackAmount: 6500 },
+            { variantId: samsungVariant.id, monthlyAmount: 10417, tenureMonths: 12, interestRate: 0, cashbackAmount: 6500 },
         ],
     });
 
@@ -86,14 +94,14 @@ async function main() {
             name: 'OnePlus 13',
             slug: 'oneplus-13',
             description: 'Fast and smooth performance with Hasselblad camera for mobile and ultra-fast charging.',
-            imageUrl: '/images/google-pixel-9-pro.png', // Temporary, will use placeholder if needed
+            imageUrl: '/images/google-pixel-9-pro.png',
             mrp: 79999,
             price: 69999,
             badge: 'HOT',
         },
     });
 
-    const oneplus256 = await prisma.variant.create({
+    const oneplusVariant = await prisma.variant.create({
         data: {
             productId: oneplus.id,
             color: 'Arctic Dawn',
@@ -105,13 +113,8 @@ async function main() {
 
     await prisma.emiPlan.createMany({
         data: [
-            { variantId: oneplus256.id, monthlyAmount: 23333, tenureMonths: 3, interestRate: 0, cashbackAmount: 4000 },
-            { variantId: oneplus256.id, monthlyAmount: 11667, tenureMonths: 6, interestRate: 0, cashbackAmount: 4000 },
-            { variantId: oneplus256.id, monthlyAmount: 5833, tenureMonths: 12, interestRate: 0, cashbackAmount: 4000 },
-            { variantId: oneplus256.id, monthlyAmount: 3100, tenureMonths: 24, interestRate: 0, cashbackAmount: 4000 },
-            { variantId: oneplus256.id, monthlyAmount: 2400, tenureMonths: 36, interestRate: 10.5, cashbackAmount: 4000 },
-            { variantId: oneplus256.id, monthlyAmount: 1900, tenureMonths: 48, interestRate: 10.5, cashbackAmount: 4000 },
-            { variantId: oneplus256.id, monthlyAmount: 1600, tenureMonths: 60, interestRate: 10.5, cashbackAmount: 4000 },
+            { variantId: oneplusVariant.id, monthlyAmount: 23333, tenureMonths: 3, interestRate: 0, cashbackAmount: 4000 },
+            { variantId: oneplusVariant.id, monthlyAmount: 11667, tenureMonths: 6, interestRate: 0, cashbackAmount: 4000 },
         ],
     });
 

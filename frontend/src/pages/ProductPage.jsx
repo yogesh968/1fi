@@ -114,10 +114,10 @@ export default function ProductPage() {
 
                     {/* Left: Product Showcase */}
                     <div className="lg:col-span-7 space-y-12">
-                        <div className="bg-[#f5f5f7]/50 rounded-[40px] p-12 aspect-[4/3] flex items-center justify-center relative group">
+                        <div className="bg-[#f5f5f7]/50 rounded-[40px] p-12 aspect-[4/3] flex items-center justify-center relative">
                             <img
                                 src={activeImage}
-                                className="max-w-[80%] max-h-full object-contain group-hover:scale-105 transition-transform duration-1000 ease-out"
+                                className="max-w-[80%] max-h-full object-contain transition-transform duration-1000 ease-out"
                                 alt={product.name}
                             />
                         </div>
