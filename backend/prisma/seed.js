@@ -42,21 +42,22 @@ async function main() {
                     imageUrl: color.img,
                 },
             });
+            console.log(`✅ Created Variant: ${color.name} - ${storage} (ID: ${variant.id})`);
 
             // Specific Plan Structure: 0%, 5%, and 10.5% interest
-            await prisma.emiPlan.createMany({
-                data: [
-                    { variantId: variant.id, monthlyAmount: Math.round(priceOverride / 3), tenureMonths: 3, interestRate: 0, cashbackAmount: 1000 },
-                    { variantId: variant.id, monthlyAmount: Math.round(priceOverride / 6), tenureMonths: 6, interestRate: 0, cashbackAmount: 1500 },
-                    { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.05) / 9), tenureMonths: 9, interestRate: 5, cashbackAmount: 1750 },
-                    { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.05) / 12), tenureMonths: 12, interestRate: 5, cashbackAmount: 2000 },
-                    { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.105) / 15), tenureMonths: 15, interestRate: 10.5, cashbackAmount: 2250 },
-                    { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.105) / 18), tenureMonths: 18, interestRate: 10.5, cashbackAmount: 2500 },
-                    { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.105) / 24), tenureMonths: 24, interestRate: 10.5, cashbackAmount: 3000 },
-                    { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.15) / 36), tenureMonths: 36, interestRate: 15, cashbackAmount: 4000 },
-                    { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.20) / 48), tenureMonths: 48, interestRate: 20, cashbackAmount: 5000 },
-                ],
-            });
+            const plans = [
+                { variantId: variant.id, monthlyAmount: Math.round(priceOverride / 3), tenureMonths: 3, interestRate: 0, cashbackAmount: 1000 },
+                { variantId: variant.id, monthlyAmount: Math.round(priceOverride / 6), tenureMonths: 6, interestRate: 0, cashbackAmount: 1500 },
+                { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.05) / 9), tenureMonths: 9, interestRate: 5, cashbackAmount: 1750 },
+                { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.05) / 12), tenureMonths: 12, interestRate: 5, cashbackAmount: 2000 },
+                { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.105) / 15), tenureMonths: 15, interestRate: 10.5, cashbackAmount: 2250 },
+                { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.105) / 18), tenureMonths: 18, interestRate: 10.5, cashbackAmount: 2500 },
+                { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.105) / 24), tenureMonths: 24, interestRate: 10.5, cashbackAmount: 3000 },
+                { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.15) / 36), tenureMonths: 36, interestRate: 15, cashbackAmount: 4000 },
+                { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.20) / 48), tenureMonths: 48, interestRate: 20, cashbackAmount: 5000 },
+            ];
+            await prisma.emiPlan.createMany({ data: plans });
+            console.log(`   - Created ${plans.length} EMI plans for this variant.`);
         }
     }
 

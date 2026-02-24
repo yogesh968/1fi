@@ -93,6 +93,12 @@ body {
 }
 
 /* Custom Minimalist Scrollbar - ALWAYS VISIBLE VERSION */
+.custom-scrollbar {
+  overflow-y: scroll !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: #000000 #f8f8f8 !important;
+}
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px !important;
   display: block !important;
@@ -105,18 +111,11 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #b5b5b5 !important;
+  background: #000000 !important;
   border-radius: 10px !important;
-  border: 2px solid #f1f1f1 !important;
+  border: 1px solid #f8f8f8 !important;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #888 !important;
-}
-
-/* Firefox support - Always show */
-.custom-scrollbar {
-  scrollbar-width: thin !important;
-  scrollbar-color: #b5b5b5 #f1f1f1 !important;
-  overflow-y: auto !important;
+  background: #333333 !important;
 }
