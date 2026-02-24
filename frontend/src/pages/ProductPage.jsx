@@ -27,7 +27,14 @@ export default function ProductPage() {
     const [confirmedOrder, setConfirmedOrder] = useState(null)
     const [activeThumbnail, setActiveThumbnail] = useState(0)
 
-    console.log('🚀 1Fi EMI Store Frontend Version: 2.1 (Forced Scroll & Multi-Storage Sync)')
+    console.log('🚀 1Fi EMI Store Frontend Version: 2.2 (Inline Styles & Sync)')
+
+    useEffect(() => {
+        if (product) {
+            console.log(`📦 Variants loaded for ${product.name}:`, product.variants?.length)
+            if (product.variants) console.table(product.variants.map(v => ({ color: v.color, storage: v.storage })))
+        }
+    }, [product])
 
     useEffect(() => {
         setLoading(true)
@@ -210,7 +217,13 @@ export default function ProductPage() {
                                     </div>
                                 </div>
 
-                                <div id="emi-plans-container" className="space-y-4 h-[260px] overflow-y-scroll overflow-x-hidden pr-3 custom-scrollbar">
+                                <div id="emi-plans-container"
+                                    style={{ height: '260px', overflowY: 'scroll', display: 'block' }}
+                                    className="space-y-4 pr-3 custom-scrollbar"
+                                >
+                                    {/* Debug Badge for User */}
+                                    <div className="text-[10px] text-gray-300 font-mono mb-2">Build v2.2 (Forced Sync)</div>
+
                                     {emiLoading ? (
                                         <div className="flex flex-col gap-4">
                                             {[1, 2, 3, 4].map(i => <div key={i} className="skeleton h-24 rounded-2xl" />)}
