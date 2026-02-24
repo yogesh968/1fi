@@ -190,7 +190,9 @@ export default function HomePage() {
                                             <div className="flex justify-between items-start mb-6">
                                                 <div>
                                                     <h3 className="text-2xl font-semibold text-black mb-1">{product.name}</h3>
-                                                    <p className="text-[14px] font-normal text-gray-400">256GB | {product.variants?.[0]?.color || 'Standard'}</p>
+                                                    <p className="text-[14px] font-normal text-gray-400">
+                                                        {product.variants?.map(v => v.storage).filter((v, i, a) => a.indexOf(v) === i).join(' | ')}
+                                                    </p>
                                                 </div>
                                                 <span className="bg-emerald-50 text-emerald-600 text-[11px] font-semibold px-3 py-1.5 rounded-full uppercase tracking-wider">
                                                     0% EMI on 3/6 months
