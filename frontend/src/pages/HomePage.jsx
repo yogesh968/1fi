@@ -41,7 +41,7 @@ export default function HomePage() {
         const brandMap = {
             'Apple': ['apple', 'iphone', 'ios'],
             'Samsung': ['samsung', 'galaxy'],
-            'OnePlus': ['oneplus']
+            'Google': ['google', 'pixel']
         }
 
         const matchesBrand = selectedBrands.length === 0 || selectedBrands.some(brand => {
@@ -56,7 +56,7 @@ export default function HomePage() {
         return matchesSearch && matchesBrand && matchesPrice
     })
 
-    const brands = ['Apple', 'Samsung', 'OnePlus']
+    const brands = ['Apple', 'Samsung', 'Google']
 
     return (
         <div className="min-h-screen bg-[#fafafa]">
