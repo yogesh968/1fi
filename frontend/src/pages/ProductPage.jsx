@@ -114,31 +114,18 @@ export default function ProductPage() {
 
                     {/* Left: Product Showcase */}
                     <div className="lg:col-span-7 space-y-12">
-                        <div className="bg-[#f5f5f7]/50 rounded-[40px] p-12 aspect-[4/3] flex items-center justify-center relative">
+                        <div className="rounded-[40px] flex items-center justify-center relative">
                             <img
                                 src={activeImage}
-                                className="max-w-[80%] max-h-full object-contain transition-transform duration-1000 ease-out"
+                                className="w-full h-auto object-contain transition-transform duration-1000 ease-out"
                                 alt={product.name}
                             />
-                        </div>
-
-                        {/* Thumbnails */}
-                        <div className="flex justify-center gap-4">
-                            {[0, 1, 2].map((i) => (
-                                <button
-                                    key={i}
-                                    className={`w-20 h-20 rounded-2xl border-2 p-2 flex items-center justify-center transition-all bg-white
-                        ${i === 0 ? 'border-black' : 'border-gray-100 hover:border-gray-300'}`}
-                                >
-                                    <img src={activeImage} className="max-w-full max-h-full object-contain" alt="" />
-                                </button>
-                            ))}
                         </div>
                     </div>
 
                     {/* Right: Product Details & Choice */}
-                    <div className="lg:col-span-5 space-y-10">
-                        <div className="space-y-2">
+                    <div className="lg:col-span-5 space-y-8">
+                        <div className="space-y-1">
                             <h1 className="text-4xl font-bold text-black tracking-tight">{product.name}</h1>
                             <p className="text-lg font-semibold text-gray-400">
                                 {selectedVariant?.storage || '256GB'} • {selectedVariant?.color || 'Deep Blue'}
@@ -152,34 +139,33 @@ export default function ProductPage() {
                                 <span className="text-lg font-semibold text-emerald-600">{discountPercent}% off</span>
                             </div>
 
-                            {/* Downpayment Highlight */}
-                            <div className="bg-emerald-50 rounded-2xl p-4 flex items-center justify-between border border-emerald-100/50">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-white">
-                                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                        </svg>
-                                    </div>
-                                    <p className="text-sm font-semibold text-emerald-900 leading-tight">
-                                        Pay just <span className="text-lg font-bold">{formatCurrency(downpayment)}</span> to get started
-                                    </p>
-                                </div>
+                            {/* Downpayment Highlight - Matches 2nd Image */}
+                            <div className="bg-[#e8fbf3] rounded-xl p-3 flex items-center gap-3 border border-emerald-100/50">
+                                <svg className="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                </svg>
+                                <p className="text-[14px] font-semibold text-emerald-900">
+                                    Pay just <span className="font-bold">{formatCurrency(downpayment)}</span> to get started
+                                </p>
                             </div>
                         </div>
 
-                        <div className="space-y-8 pt-4">
+                        <div className="space-y-8 pt-2">
                             <VariantSelector
                                 variants={product.variants}
                                 selectedVariant={selectedVariant}
                                 onSelect={handleVariantSelect}
                             />
 
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-2">
-                                    <svg className="w-4 h-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                                    </svg>
-                                    <h3 className="text-sm font-bold uppercase tracking-widest text-black">Choose your EMI plan</h3>
+                            <div className="space-y-5">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                        </svg>
+                                        <h3 className="text-[15px] font-bold uppercase tracking-tight text-black">Choose your EMI plan</h3>
+                                    </div>
+                                    <span className="bg-blue-50 text-blue-600 text-[11px] font-bold px-2 py-1 rounded">0% Interest</span>
                                 </div>
 
                                 <div className="space-y-4 max-h-[380px] overflow-y-auto pr-2 custom-scrollbar transition-all">
@@ -198,52 +184,55 @@ export default function ProductPage() {
                                         ))
                                     )}
                                 </div>
-                                <p className="text-[11px] font-semibold text-gray-400 pl-1 mt-2">EMI starts from next billing cycle</p>
                             </div>
                         </div>
 
-                        <div className="pt-6 space-y-6">
+                        <div className="pt-4">
                             <Button
                                 onClick={() => setIsModalOpen(true)}
                                 disabled={!selectedPlan || placingOrder}
-                                className="w-full bg-[#001429] hover:bg-black text-white py-6 rounded-[24px] text-lg font-bold tracking-tight shadow-2xl shadow-black/10 transition-all flex items-center justify-center gap-3 active:scale-[0.98]"
+                                className="w-full bg-[#0a1128] hover:bg-black text-white py-5 rounded-xl text-[16px] font-bold tracking-tight transition-all flex items-center justify-center gap-2 shadow-lg shadow-black/10"
                             >
                                 {placingOrder ? (
                                     <div className="w-6 h-6 border-3 border-white/20 border-t-white rounded-full animate-spin" />
                                 ) : (
                                     <>
-                                        <span>Proceed with {selectedPlan?.tenureMonths || 0}-month EMI</span>
-                                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                         </svg>
+                                        <span>Proceed with {selectedPlan?.tenureMonths || 0}-month EMI</span>
                                     </>
                                 )}
                             </Button>
-
-                            <div className="flex items-center justify-center gap-8 pt-4">
-                                <div className="flex items-center gap-2">
-                                    <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                    </svg>
-                                    <span className="text-[11px] font-semibold text-gray-500 uppercase tracking-widest text-center">Secure checkout</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                                    </svg>
-                                    <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest text-center">Backed by mutual funds</span>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
 
-                {/* About Section */}
-                <div className="mt-32 pt-16 border-t border-gray-100">
-                    <h2 className="text-2xl font-bold text-black mb-6">About {product.name}</h2>
-                    <p className="text-lg text-gray-500 leading-relaxed font-normal">
-                        {product.description}
-                    </p>
+                <div className="mt-24 space-y-16">
+                    <div className="pt-16 border-t border-gray-100 max-w-2xl">
+                        <h2 className="text-2xl font-bold text-black mb-6 tracking-tight">What's in the Box</h2>
+                        <div className="grid grid-cols-2 gap-8">
+                            <div className="space-y-4">
+                                <div className="bg-gray-50 aspect-square rounded-2xl flex items-center justify-center p-8">
+                                    <img src={activeImage} className="w-full h-auto object-contain opacity-80" alt="" />
+                                </div>
+                                <p className="text-center text-sm font-medium text-black">{product.name}</p>
+                            </div>
+                            <div className="space-y-4">
+                                <div className="bg-gray-50 aspect-square rounded-2xl flex items-center justify-center p-8">
+                                    <div className="w-full h-1 bg-gray-300 rounded-full" />
+                                </div>
+                                <p className="text-center text-sm font-medium text-black">USB-C Charge Cable</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="max-w-3xl">
+                        <h2 className="text-2xl font-bold text-black mb-6 tracking-tight">About {product.name}</h2>
+                        <p className="text-lg text-gray-500 leading-relaxed font-normal">
+                            {product.description}
+                        </p>
+                    </div>
                 </div>
 
                 <ConfirmModal
