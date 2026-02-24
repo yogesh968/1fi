@@ -4,6 +4,6 @@ const { createOrder, getAllOrders, cancelOrder } = require('../controllers/order
 
 router.post('/', createOrder);
 router.get('/', getAllOrders);
-router.patch('/:id/cancel', cancelOrder);
+router.post('/:id/cancel', cancelOrder);
 
 module.exports = router;

@@ -45,7 +45,7 @@ export const api = {
 
     cancelOrder: async (orderId) => {
         const data = await handleResponse(await fetch(`${BASE_URL}/orders/${orderId}/cancel`, {
-            method: 'PATCH',
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' }
         }))
         return data.data
