@@ -12,7 +12,7 @@ export default function OrdersPage() {
 
     useEffect(() => {
         api.getOrders()
-            .then(data => setOrders(data))
+            .then(data => setOrders(data.filter(o => o.status !== 'CANCELLED')))
             .catch(err => console.error(err))
             .finally(() => setLoading(false))
     }, [])
@@ -27,8 +27,8 @@ export default function OrdersPage() {
         setCancelling(true)
         try {
             await api.cancelOrder(orderToCancel.id)
-            // Update local state to reflect cancellation
-            setOrders(orders.map(o => o.id === orderToCancel.id ? { ...o, status: 'CANCELLED' } : o))
+            // Remove the cancelled order from local state
+            setOrders(orders.filter(o => o.id !== orderToCancel.id))
             setIsModalOpen(false)
             setOrderToCancel(null)
         } catch (err) {
@@ -48,7 +48,7 @@ export default function OrdersPage() {
             <main className="max-w-screen-md mx-auto px-6 pt-24 pb-20">
                 <div className="mb-12">
                     <h1 className="text-3xl font-semibold text-black tracking-tight mb-2">My Orders</h1>
-                    <p className="text-gray-500 text-sm">{orders.filter(o => o.status !== 'CANCELLED').length} subscriptions active</p>
+                    <p className="text-gray-500 text-sm">{orders.length} subscriptions active</p>
                 </div>
 
                 {loading ? (
@@ -75,8 +75,8 @@ export default function OrdersPage() {
                                     </div>
                                     <div className="text-right">
                                         <span className={`text-[11px] font-bold uppercase tracking-wider px-2 py-1 rounded ${order.status === 'CANCELLED'
-                                                ? 'text-red-600 bg-red-50'
-                                                : 'text-blue-600 bg-blue-50'
+                                            ? 'text-red-600 bg-red-50'
+                                            : 'text-blue-600 bg-blue-50'
                                             }`}>
                                             {order.status}
                                         </span>
