@@ -20,8 +20,9 @@ app.use('/api/orders', orderRoutes);
 // Health check & Welcome
 app.get('/', (req, res) => {
     res.json({
-        message: '🚀 PRIME STORE API is Live',
+        message: '🚀 1Fi EMI Store API is Live',
         status: 'production',
+        version: '1.1',
         docs: '/api/products'
     });
 });

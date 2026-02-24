@@ -1,7 +1,9 @@
 const getBaseUrl = () => {
     if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL
-    // Fallback for user's specific Render deployment if on Vercel
+
+    // Fallback for production builds if VITE_API_URL is not provided
     if (window.location.hostname.includes('vercel.app')) {
+        console.warn('⚠️ VITE_API_URL not found. Falling back to default Render API.')
         return 'https://onefi-0mme.onrender.com/api'
     }
     return '/api'
