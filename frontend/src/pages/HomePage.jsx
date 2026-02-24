@@ -8,16 +8,17 @@ export default function HomePage() {
     const [loading, setLoading] = useState(true)
     const [searchTerm, setSearchTerm] = useState('')
     const [selectedBrands, setSelectedBrands] = useState([])
-    const [priceRange, setPriceRange] = useState([69999, 127400])
+    const [minPrice, setMinPrice] = useState('')
+    const [maxPrice, setMaxPrice] = useState('')
 
     useEffect(() => {
         api.getAllProducts()
             .then(data => {
                 setProducts(data)
-                // Find min/max prices for initial range
                 if (data.length > 0) {
                     const prices = data.map(p => p.price)
-                    setPriceRange([Math.min(...prices), Math.max(...prices)])
+                    setMinPrice(Math.min(...prices))
+                    setMaxPrice(Math.max(...prices))
                 }
             })
             .catch(err => console.error(err))
@@ -35,8 +36,23 @@ export default function HomePage() {
 
     const filteredProducts = products.filter(p => {
         const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase())
-        const matchesBrand = selectedBrands.length === 0 || selectedBrands.some(brand => p.name.toLowerCase().includes(brand.toLowerCase()))
-        const matchesPrice = p.price >= priceRange[0] && p.price <= priceRange[1]
+
+        // Brand logic: If "Apple" is selected, match "iPhone" or "Apple"
+        const brandMap = {
+            'Apple': ['apple', 'iphone', 'ios'],
+            'Samsung': ['samsung', 'galaxy'],
+            'OnePlus': ['oneplus']
+        }
+
+        const matchesBrand = selectedBrands.length === 0 || selectedBrands.some(brand => {
+            const keywords = brandMap[brand] || [brand.toLowerCase()]
+            return keywords.some(key => p.name.toLowerCase().includes(key))
+        })
+
+        const numMin = Number(minPrice) || 0
+        const numMax = Number(maxPrice) || Infinity
+        const matchesPrice = p.price >= numMin && p.price <= numMax
+
         return matchesSearch && matchesBrand && matchesPrice
     })
 
@@ -96,22 +112,30 @@ export default function HomePage() {
                                     <label className="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-4">Price Range</label>
                                     <div className="flex items-center gap-2">
                                         <input
-                                            type="text"
-                                            value={priceRange[0]}
-                                            onChange={(e) => setPriceRange([parseInt(e.target.value) || 0, priceRange[1]])}
-                                            className="w-full h-10 px-3 bg-white border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-black"
+                                            type="number"
+                                            value={minPrice}
+                                            onChange={(e) => setMinPrice(e.target.value)}
+                                            className="w-full h-10 px-3 bg-white border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-1 focus:ring-black"
                                         />
                                         <span className="text-gray-400">−</span>
                                         <input
-                                            type="text"
-                                            value={priceRange[1]}
-                                            onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value) || 0])}
-                                            className="w-full h-10 px-3 bg-white border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-black"
+                                            type="number"
+                                            value={maxPrice}
+                                            onChange={(e) => setMaxPrice(e.target.value)}
+                                            className="w-full h-10 px-3 bg-white border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-1 focus:ring-black"
                                         />
                                     </div>
-                                    <div className="flex justify-between mt-2 px-1">
-                                        <span className="text-[10px] font-bold text-gray-400">Min: {formatCurrency(69999)}</span>
-                                        <span className="text-[10px] font-bold text-gray-400">Max: {formatCurrency(127400)}</span>
+                                    <div className="flex justify-between mt-4">
+                                        <button
+                                            onClick={() => {
+                                                const prices = products.map(p => p.price);
+                                                setMinPrice(Math.min(...prices));
+                                                setMaxPrice(Math.max(...prices));
+                                            }}
+                                            className="text-[10px] font-bold text-blue-600 uppercase hover:underline"
+                                        >
+                                            Reset Range
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +158,13 @@ export default function HomePage() {
                             <div className="py-20 text-center bg-white rounded-[32px] border border-gray-100">
                                 <p className="text-gray-400 font-medium">No products match your filters.</p>
                                 <button
-                                    onClick={() => { setSelectedBrands([]); setSearchTerm(''); setPriceRange([69999, 127400]) }}
+                                    onClick={() => {
+                                        setSelectedBrands([]);
+                                        setSearchTerm('');
+                                        const prices = products.map(p => p.price);
+                                        setMinPrice(Math.min(...prices));
+                                        setMaxPrice(Math.max(...prices));
+                                    }}
                                     className="mt-4 text-black font-bold underline"
                                 >
                                     Clear all filters

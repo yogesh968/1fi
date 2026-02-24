@@ -6,19 +6,23 @@ export default function Navbar() {
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
             <div className="max-w-screen-xl mx-auto px-6 h-16 flex items-center justify-between">
-                <Link to="/" className="text-xl font-bold tracking-tight text-black">
-                    1Fi EMI Store
-                </Link>
+                <div className="flex items-center gap-10">
+                    <Link to="/" className="text-xl font-bold tracking-tight text-black">
+                        EMI Store
+                    </Link>
 
-                <div className="hidden sm:block text-[13px] text-gray-500 font-medium">
-                    Buy premium smartphones on easy EMI
+                    <nav className="hidden md:flex items-center gap-6">
+                        <Link to="/products/iphone-17-pro" className="text-[13px] font-bold text-gray-400 hover:text-black transition-colors">iPhone</Link>
+                        <Link to="/products/samsung-s25-ultra" className="text-[13px] font-bold text-gray-400 hover:text-black transition-colors">Galaxy</Link>
+                        <Link to="/products/oneplus-13" className="text-[13px] font-bold text-gray-400 hover:text-black transition-colors">Pixel</Link>
+                    </nav>
                 </div>
 
                 <Link
                     to="/orders"
-                    className="text-[13px] font-bold px-5 py-2 rounded-full border border-gray-100 bg-gray-50 hover:bg-black hover:text-white hover:border-black transition-all"
+                    className="text-[13px] font-bold px-5 py-2 rounded-full border border-gray-100 bg-white hover:border-black transition-all"
                 >
-                    {pathname === '/orders' ? 'Viewing Orders' : 'My Orders'}
+                    My Orders
                 </Link>
             </div>
         </header>
