@@ -114,19 +114,24 @@ export default function ProductPage() {
     const discountPercent = Math.round(((product.mrp - effectivePrice) / product.mrp) * 100)
     const downpayment = Math.round(effectivePrice * 0.02)
 
-    // Detail images mapping for iPhone colors
+    // Detail images mapping for products
     const detailImages = {
-        'Orange': '/images/iphone-orange-detail.png',
-        'White': '/images/iphone-white-detail.png',
-        'Blue': '/images/iphone-blue-detail.png'
+        'iphone-17-pro': {
+            'Orange': '/images/iphone-orange-detail.png',
+            'White': '/images/iphone-white-detail.png',
+            'Blue': '/images/iphone-blue-detail.png'
+        },
+        'samsung-s24-ultra': '/images/samsung-s24-ultra-detail.png'
     }
 
     // Define images for the current view
+    const currentDetailImg = product?.slug === 'iphone-17-pro'
+        ? detailImages['iphone-17-pro'][selectedVariant?.color]
+        : detailImages[product?.slug]
+
     const productImages = [
         selectedVariant?.imageUrl || product?.imageUrl,
-        (product?.slug === 'iphone-17-pro' && selectedVariant?.color && detailImages[selectedVariant.color])
-            ? detailImages[selectedVariant.color]
-            : '/images/iphone-17-pro-silver.png'
+        currentDetailImg || '/images/iphone-17-pro-silver.png'
     ]
 
     return (
