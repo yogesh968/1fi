@@ -8,6 +8,7 @@ const getBaseUrl = () => {
 }
 
 const BASE_URL = getBaseUrl()
+console.log('📡 Frontend connecting to API at:', BASE_URL)
 
 const handleResponse = async (res) => {
     if (!res.ok) {
