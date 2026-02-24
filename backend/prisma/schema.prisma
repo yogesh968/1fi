@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  slug        String    @unique
+  description String?
+  imageUrl    String?
+  mrp         Float
+  price       Float
+  badge       String?   @default("NEW")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  variants    Variant[]
+}
+
+model Variant {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  productId     String    @db.ObjectId
+  color         String
+  storage       String
+  priceOverride Float?
+  imageUrl      String?
+  product       Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  emiPlans      EmiPlan[]
+  orders        Order[]
+  createdAt     DateTime  @default(now())
+
+  @@index([productId])
+}
+
+model EmiPlan {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  variantId      String   @db.ObjectId
+  monthlyAmount  Float
+  tenureMonths   Int
+  interestRate   Float    @default(0)
+  cashbackAmount Float    @default(0)
+  variant        Variant  @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  orders         Order[]
+  createdAt      DateTime @default(now())
+
+  @@index([variantId])
+}
+
+model Order {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  variantId       String   @db.ObjectId
+  emiPlanId       String   @db.ObjectId
+  orderNumber     String   @unique
+  customerName    String   @default("Premium Guest")
+  totalAmount     Float
+  monthlySchedule Float
+  tenure          Int
+  status          String   @default("CONFIRMED")
+  variant         Variant  @relation(fields: [variantId], references: [id])
+  emiPlan         EmiPlan  @relation(fields: [emiPlanId], references: [id])
+  createdAt       DateTime @default(now())
+
+  @@index([variantId])
+  @@index([emiPlanId])
+}
