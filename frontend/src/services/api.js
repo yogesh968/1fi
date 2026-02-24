@@ -3,7 +3,7 @@ const getBaseUrl = () => {
 
     // Fallback for production builds if VITE_API_URL is not provided
     if (window.location.hostname.includes('vercel.app')) {
-        console.warn('⚠️ VITE_API_URL not found. Falling back to default Render API.')
+        console.warn('VITE_API_URL not found. Falling back to default Render API.')
         return 'https://onefi-0mme.onrender.com/api'
     }
     return '/api'
