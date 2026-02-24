@@ -121,7 +121,8 @@ export default function ProductPage() {
             'White': '/images/iphone-white-detail.png',
             'Blue': '/images/iphone-blue-detail.png'
         },
-        'samsung-s24-ultra': '/images/samsung-s24-ultra-detail.png'
+        'samsung-s24-ultra': '/images/samsung-s24-ultra-detail.png',
+        'google-pixel-9-pro': '/images/google-pixel-9-pro-detail.png'
     }
 
     // Define images for the current view

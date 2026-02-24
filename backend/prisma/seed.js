@@ -94,7 +94,7 @@ async function main() {
             description: 'Google\'s most advanced Pixel with Tensor G4 chip.',
         },
     });
-    for (const pStorage of ['128GB', '256GB', '512GB']) {
+    for (const pStorage of ['512GB', '256GB', '128GB']) {
         const pPrice = pStorage === '128GB' ? 99999 : (pStorage === '256GB' ? 109999 : 119999);
         const pVariant = await prisma.variant.create({ data: { productId: pixel.id, color: 'Obsidian', storage: pStorage, priceOverride: pPrice, imageUrl: '/images/google-pixel-9-pro.png' } });
         await prisma.emiPlan.createMany({
