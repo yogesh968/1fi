@@ -9,17 +9,8 @@ export default function Navbar() {
             <div className="max-w-screen-xl mx-auto px-6 h-16 flex items-center justify-between">
                 <div className="flex items-center gap-10">
                     <Link to="/" className="text-xl font-semibold tracking-tight text-black">
-                        EMI Store
+                        1Fi EMI Store
                     </Link>
-
-                    {/* Only show these shortcuts on the Home Page */}
-                    {isHomePage && (
-                        <nav className="hidden md:flex items-center gap-6">
-                            <Link to="/products/iphone-17-pro" className="text-[13px] font-semibold text-gray-400 hover:text-black transition-colors">iPhone</Link>
-                            <Link to="/products/samsung-s25-ultra" className="text-[13px] font-semibold text-gray-400 hover:text-black transition-colors">Galaxy</Link>
-                            <Link to="/products/oneplus-13" className="text-[13px] font-semibold text-gray-400 hover:text-black transition-colors">Pixel</Link>
-                        </nav>
-                    )}
                 </div>
 
                 <Link
