@@ -74,7 +74,7 @@ export default function OrdersPage() {
                                         </div>
                                     </div>
                                     <div className="text-right">
-                                        <span className={`text-[11px] font-bold uppercase tracking-wider px-2 py-1 rounded ${order.status === 'CANCELLED'
+                                        <span className={`text-[11px] font-semibold uppercase tracking-wider px-2 py-1 rounded ${order.status === 'CANCELLED'
                                             ? 'text-red-600 bg-red-50'
                                             : 'text-blue-600 bg-blue-50'
                                             }`}>

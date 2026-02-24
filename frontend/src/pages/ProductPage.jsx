@@ -139,17 +139,17 @@ export default function ProductPage() {
                     {/* Right: Product Details & Choice */}
                     <div className="lg:col-span-5 space-y-10">
                         <div className="space-y-2">
-                            <h1 className="text-4xl font-black text-black tracking-tight">{product.name}</h1>
-                            <p className="text-lg font-bold text-gray-400">
+                            <h1 className="text-4xl font-bold text-black tracking-tight">{product.name}</h1>
+                            <p className="text-lg font-semibold text-gray-400">
                                 {selectedVariant?.storage || '256GB'} • {selectedVariant?.color || 'Deep Blue'}
                             </p>
                         </div>
 
                         <div className="space-y-4">
                             <div className="flex items-baseline gap-3">
-                                <span className="text-4xl font-black text-black">{formatCurrency(effectivePrice)}</span>
-                                <span className="text-xl text-gray-300 line-through font-bold">{formatCurrency(product.mrp)}</span>
-                                <span className="text-lg font-bold text-emerald-600">{discountPercent}% off</span>
+                                <span className="text-4xl font-bold text-black">{formatCurrency(effectivePrice)}</span>
+                                <span className="text-xl text-gray-300 line-through font-semibold">{formatCurrency(product.mrp)}</span>
+                                <span className="text-lg font-semibold text-emerald-600">{discountPercent}% off</span>
                             </div>
 
                             {/* Downpayment Highlight */}
@@ -160,8 +160,8 @@ export default function ProductPage() {
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                         </svg>
                                     </div>
-                                    <p className="text-sm font-bold text-emerald-900 leading-tight">
-                                        Pay just <span className="text-lg font-black">{formatCurrency(downpayment)}</span> to get started
+                                    <p className="text-sm font-semibold text-emerald-900 leading-tight">
+                                        Pay just <span className="text-lg font-bold">{formatCurrency(downpayment)}</span> to get started
                                     </p>
                                 </div>
                             </div>
@@ -179,7 +179,7 @@ export default function ProductPage() {
                                     <svg className="w-4 h-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                                     </svg>
-                                    <h3 className="text-sm font-black uppercase tracking-widest text-black">Choose your EMI plan</h3>
+                                    <h3 className="text-sm font-bold uppercase tracking-widest text-black">Choose your EMI plan</h3>
                                 </div>
 
                                 <div className="space-y-4 max-h-[380px] overflow-y-auto pr-2 custom-scrollbar transition-all">
@@ -198,7 +198,7 @@ export default function ProductPage() {
                                         ))
                                     )}
                                 </div>
-                                <p className="text-[11px] font-bold text-gray-400 pl-1 mt-2">EMI starts from next billing cycle</p>
+                                <p className="text-[11px] font-semibold text-gray-400 pl-1 mt-2">EMI starts from next billing cycle</p>
                             </div>
                         </div>
 
@@ -206,7 +206,7 @@ export default function ProductPage() {
                             <Button
                                 onClick={() => setIsModalOpen(true)}
                                 disabled={!selectedPlan || placingOrder}
-                                className="w-full bg-[#001429] hover:bg-black text-white py-6 rounded-[24px] text-lg font-black tracking-tight shadow-2xl shadow-black/10 transition-all flex items-center justify-center gap-3 active:scale-[0.98]"
+                                className="w-full bg-[#001429] hover:bg-black text-white py-6 rounded-[24px] text-lg font-bold tracking-tight shadow-2xl shadow-black/10 transition-all flex items-center justify-center gap-3 active:scale-[0.98]"
                             >
                                 {placingOrder ? (
                                     <div className="w-6 h-6 border-3 border-white/20 border-t-white rounded-full animate-spin" />
@@ -225,7 +225,7 @@ export default function ProductPage() {
                                     <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                     </svg>
-                                    <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest text-center">Secure checkout</span>
+                                    <span className="text-[11px] font-semibold text-gray-500 uppercase tracking-widest text-center">Secure checkout</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
@@ -240,8 +240,8 @@ export default function ProductPage() {
 
                 {/* About Section */}
                 <div className="mt-32 pt-16 border-t border-gray-100">
-                    <h2 className="text-2xl font-black text-black mb-6">About {product.name}</h2>
-                    <p className="text-lg text-gray-500 leading-relaxed font-medium">
+                    <h2 className="text-2xl font-bold text-black mb-6">About {product.name}</h2>
+                    <p className="text-lg text-gray-500 leading-relaxed font-normal">
                         {product.description}
                     </p>
                 </div>

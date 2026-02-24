@@ -69,7 +69,7 @@ export default function HomePage() {
                         <input
                             type="text"
                             placeholder="Search for smartphones..."
-                            className="w-full h-14 pl-12 pr-6 rounded-xl border border-gray-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-black/5 transition-all text-[15px]"
+                            className="w-full h-14 pl-12 pr-6 rounded-xl border border-gray-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-black/5 transition-all text-[15px] font-medium"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -87,29 +87,29 @@ export default function HomePage() {
                                 <svg className="w-4 h-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                                 </svg>
-                                <h3 className="text-[15px] font-bold text-black uppercase tracking-tight">Filters</h3>
+                                <h3 className="text-[15px] font-semibold text-black uppercase tracking-tight">Filters</h3>
                             </div>
 
                             <div className="space-y-8">
                                 <div>
-                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-4">Brand</label>
+                                    <label className="text-xs font-medium text-gray-500 uppercase tracking-widest block mb-4">Brand</label>
                                     <div className="space-y-3">
                                         {brands.map(brand => (
                                             <label key={brand} className="flex items-center gap-3 cursor-pointer group">
                                                 <input
                                                     type="checkbox"
-                                                    className="w-5 h-5 border-2 border-gray-300 rounded focus:ring-0 accent-black cursor-pointer"
+                                                    className="w-5 h-5 border-gray-300 rounded focus:ring-0 accent-black cursor-pointer"
                                                     checked={selectedBrands.includes(brand)}
                                                     onChange={() => toggleBrand(brand)}
                                                 />
-                                                <span className={`text-[14px] font-medium transition-colors ${selectedBrands.includes(brand) ? 'text-black' : 'text-gray-600 group-hover:text-black'}`}>{brand}</span>
+                                                <span className={`text-[14px] font-medium transition-colors ${selectedBrands.includes(brand) ? 'text-black' : 'text-gray-500 group-hover:text-black'}`}>{brand}</span>
                                             </label>
                                         ))}
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-4">Price Range</label>
+                                    <label className="text-xs font-medium text-gray-500 uppercase tracking-widest block mb-4">Price Range</label>
                                     <div className="flex items-center gap-2">
                                         <input
                                             type="number"
@@ -132,7 +132,7 @@ export default function HomePage() {
                                                 setMinPrice(Math.min(...prices));
                                                 setMaxPrice(Math.max(...prices));
                                             }}
-                                            className="text-[10px] font-bold text-blue-600 uppercase hover:underline"
+                                            className="text-[10px] font-semibold text-blue-600 uppercase hover:underline"
                                         >
                                             Reset Range
                                         </button>
@@ -145,7 +145,7 @@ export default function HomePage() {
                     {/* Product List */}
                     <div className="flex-1 space-y-6">
                         <div className="flex items-center justify-between mb-4">
-                            <p className="text-sm font-bold text-gray-400 uppercase tracking-tight">
+                            <p className="text-sm font-medium text-gray-400 uppercase tracking-tight">
                                 {filteredProducts.length} products found
                             </p>
                         </div>
@@ -165,7 +165,7 @@ export default function HomePage() {
                                         setMinPrice(Math.min(...prices));
                                         setMaxPrice(Math.max(...prices));
                                     }}
-                                    className="mt-4 text-black font-bold underline"
+                                    className="mt-4 text-black font-semibold underline"
                                 >
                                     Clear all filters
                                 </button>
@@ -189,10 +189,10 @@ export default function HomePage() {
                                         <div className="flex-1 p-8 flex flex-col justify-center">
                                             <div className="flex justify-between items-start mb-6">
                                                 <div>
-                                                    <h3 className="text-2xl font-bold text-black mb-1">{product.name}</h3>
-                                                    <p className="text-[14px] font-medium text-gray-400">256GB | {product.variants?.[0]?.color || 'Standard'}</p>
+                                                    <h3 className="text-2xl font-semibold text-black mb-1">{product.name}</h3>
+                                                    <p className="text-[14px] font-normal text-gray-400">256GB | {product.variants?.[0]?.color || 'Standard'}</p>
                                                 </div>
-                                                <span className="bg-emerald-50 text-emerald-600 text-[11px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                                                <span className="bg-emerald-50 text-emerald-600 text-[11px] font-semibold px-3 py-1.5 rounded-full uppercase tracking-wider">
                                                     0% EMI on 3/6 months
                                                 </span>
                                             </div>
@@ -200,24 +200,24 @@ export default function HomePage() {
                                             <div className="space-y-4 mb-8">
                                                 <div>
                                                     <p className="text-[13px] font-medium text-gray-400 mb-1 flex items-center gap-1.5">
-                                                        EMI From <span className="text-xl font-black text-black tracking-tighter">
+                                                        EMI From <span className="text-xl font-bold text-black tracking-tighter">
                                                             {formatCurrency(Math.round(product.price / 45))} /month
                                                         </span>
                                                     </p>
-                                                    <p className="text-[12px] font-bold text-gray-500">Downpayment: {formatCurrency(Math.round(product.price * 0.02))}</p>
+                                                    <p className="text-[12px] font-medium text-gray-500">Downpayment: {formatCurrency(Math.round(product.price * 0.02))}</p>
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-[13px] font-medium text-gray-400">Price:</span>
-                                                    <span className="text-lg font-black text-black">{formatCurrency(product.price)}</span>
+                                                    <span className="text-lg font-bold text-black">{formatCurrency(product.price)}</span>
                                                     <span className="text-sm text-gray-400 line-through font-medium">{formatCurrency(product.mrp)}</span>
-                                                    <span className="text-[13px] font-bold text-emerald-600">
+                                                    <span className="text-[13px] font-semibold text-emerald-600">
                                                         {Math.round(((product.mrp - product.price) / product.mrp) * 100)}% Off
                                                     </span>
                                                 </div>
                                             </div>
 
                                             <div className="flex justify-end">
-                                                <div className="flex items-center gap-2 text-[14px] font-bold text-black group-hover:translate-x-1 transition-transform">
+                                                <div className="flex items-center gap-2 text-[14px] font-semibold text-black group-hover:translate-x-1 transition-transform">
                                                     View Details
                                                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />

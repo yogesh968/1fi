@@ -27,20 +27,20 @@ export default function EMIPlanCard({ plan, isSelected, onSelect }) {
 
                 <div>
                     <div className="flex items-baseline gap-1.5 mb-0.5">
-                        <span className="text-xl font-bold text-black tracking-tight">{formatCurrency(plan.monthlyAmount)}</span>
-                        <span className="text-[13px] font-bold text-gray-400">/ mo</span>
+                        <span className="text-xl font-semibold text-black tracking-tight">{formatCurrency(plan.monthlyAmount)}</span>
+                        <span className="text-[13px] font-medium text-gray-400">/ mo</span>
                     </div>
-                    <div className="text-[13px] font-bold text-gray-500">
+                    <div className="text-[13px] font-medium text-gray-500">
                         {plan.tenureMonths} Months
                     </div>
                 </div>
             </div>
 
             <div className="flex flex-col items-end justify-center">
-                <div className="text-[14px] font-bold text-emerald-600 mb-0.5">
+                <div className="text-[14px] font-semibold text-emerald-600 mb-0.5">
                     {formatCurrency(plan.cashbackAmount || 7500)} Cashback
                 </div>
-                <div className="text-[10px] font-black text-gray-300 uppercase tracking-widest">
+                <div className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">
                     {isZeroInterest ? '0% INTEREST' : `${plan.interestRate}% interest`}
                 </div>
             </div>
