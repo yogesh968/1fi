@@ -1,4 +1,13 @@
-const BASE_URL = import.meta.env.VITE_API_URL || '/api'
+const getBaseUrl = () => {
+    if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL
+    // Fallback for user's specific Render deployment if on Vercel
+    if (window.location.hostname.includes('vercel.app')) {
+        return 'https://onefi-0mme.onrender.com/api'
+    }
+    return '/api'
+}
+
+const BASE_URL = getBaseUrl()
 
 const handleResponse = async (res) => {
     if (!res.ok) {
@@ -44,6 +53,7 @@ export const api = {
     },
 
     cancelOrder: async (orderId) => {
+        console.log(`📡 Attempting to cancel order: ${orderId} at ${BASE_URL}/orders/${orderId}/cancel`)
         const data = await handleResponse(await fetch(`${BASE_URL}/orders/${orderId}/cancel`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
