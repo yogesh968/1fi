@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import VariantSelector from '../components/VariantSelector'
 import EMIPlanCard from '../components/EMIPlanCard'
@@ -25,7 +25,7 @@ export default function ProductPage() {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [placingOrder, setPlacingOrder] = useState(false)
     const [confirmedOrder, setConfirmedOrder] = useState(null)
-    const [activeImage, setActiveImage] = useState(null)
+    const [activeThumbnail, setActiveThumbnail] = useState(0)
 
     useEffect(() => {
         setLoading(true)
@@ -37,7 +37,7 @@ export default function ProductPage() {
                 setProduct(data)
                 const firstVariant = data.variants?.[0] || null
                 setSelectedVariant(firstVariant)
-                setActiveImage(firstVariant?.imageUrl || data.imageUrl)
+                setActiveThumbnail(0) // Reset to first thumb
                 if (firstVariant?.emiPlans?.length) {
                     const plansAsc = [...firstVariant.emiPlans].sort((a, b) => a.tenureMonths - b.tenureMonths)
                     setEmiPlans(plansAsc)
@@ -51,7 +51,7 @@ export default function ProductPage() {
     const handleVariantSelect = async (variant) => {
         if (!variant || variant.id === selectedVariant?.id) return
         setSelectedVariant(variant)
-        setActiveImage(variant.imageUrl || product.imageUrl)
+        setActiveThumbnail(0) // Reset to first thumb
         setSelectedPlan(null)
         setEmiLoading(true)
         try {
@@ -105,21 +105,56 @@ export default function ProductPage() {
     const discountPercent = Math.round(((product.mrp - effectivePrice) / product.mrp) * 100)
     const downpayment = Math.round(effectivePrice * 0.02)
 
+    // Define images for the current view
+    const productImages = [
+        selectedVariant?.imageUrl || product?.imageUrl,
+        // Detail/Side image for White Titanium iPhone 17 Pro
+        (product?.slug === 'iphone-17-pro' && selectedVariant?.color === 'White')
+            ? 'https://www.apple.com/v/iphone-16-pro/c/images/overview/action-button/hw_action_button__d9yvpx0v7e8y_large.jpg'
+            : '/images/iphone-17-pro-silver.png'
+    ]
+
     return (
         <div className="min-h-screen bg-white">
             <Navbar />
 
             <main className="max-w-screen-xl mx-auto px-6 pt-24 pb-20">
+                {/* Back Link */}
+                <div className="mb-8">
+                    <Link to="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-black transition-colors font-medium">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Back to Home
+                    </Link>
+                </div>
+
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
 
                     {/* Left: Product Showcase */}
-                    <div className="lg:col-span-7 space-y-12">
-                        <div className="rounded-[40px] flex items-center justify-center relative">
+                    <div className="lg:col-span-7 space-y-8">
+                        <div className="bg-[#f9f9f9] rounded-[32px] aspect-[4/5] md:aspect-square flex items-center justify-center p-12 relative overflow-hidden">
                             <img
-                                src={activeImage}
-                                className="w-full h-auto object-contain transition-transform duration-1000 ease-out"
+                                src={productImages[activeThumbnail]}
+                                className="w-full h-full object-contain transition-all duration-700 ease-out animate-fade-in"
                                 alt={product.name}
+                                key={activeThumbnail}
                             />
+                        </div>
+
+                        {/* Thumbnails functional mapping */}
+                        <div className="flex justify-center gap-4">
+                            {productImages.map((img, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => setActiveThumbnail(idx)}
+                                    className={`w-20 h-20 rounded-2xl border-2 p-2 bg-white overflow-hidden transition-all duration-300
+                                        ${activeThumbnail === idx ? 'border-black scale-105 shadow-md' : 'border-gray-100 hover:border-gray-300 opacity-60 hover:opacity-100'}
+                                    `}
+                                >
+                                    <img src={img} className="w-full h-full object-contain" alt={`Thumbnail ${idx + 1}`} />
+                                </button>
+                            ))}
                         </div>
                     </div>
 

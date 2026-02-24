@@ -2,7 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
-    console.log('Seeding database with professional assets...');
+    console.log('🌱 Seeding production database on MongoDB...');
 
     // Clear existing data
     await prisma.order.deleteMany();
@@ -15,58 +15,52 @@ async function main() {
         data: {
             name: 'iPhone 17 Pro',
             slug: 'iphone-17-pro',
-            description: 'The most powerful iPhone ever with A19 Pro chip, titanium design, and pro camera system.',
+            description: 'The most powerful iPhone ever with A19 Pro chip, ProMotion display, and titanium design.',
             imageUrl: '/images/iphone-white.png',
-            mrp: 134900,
+            mrp: 149900,
             price: 127400,
             badge: 'NEW',
         },
     });
 
-    const colors = ['White', 'Orange', 'Blue'];
-    const storages = ['256GB', '512GB'];
-    const imageMap = {
-        'White': '/images/iphone-white.png',
-        'Orange': '/images/iphone-orange.png',
-        'Blue': '/images/iphone-blue.png'
-    };
+    // Variants for iPhone 17 Pro
+    const colors = [
+        { name: 'Orange', img: '/images/iphone-orange.png' },
+        { name: 'White', img: '/images/iphone-white.png' },
+        { name: 'Blue', img: '/images/iphone-blue.png' }
+    ];
 
     for (const color of colors) {
-        for (const storage of storages) {
-            const priceOverride = storage === '512GB' ? 147400 : 127400;
-            const variant = await prisma.variant.create({
-                data: {
-                    productId: iphone.id,
-                    color: color,
-                    storage: storage,
-                    priceOverride: priceOverride,
-                    imageUrl: imageMap[color],
-                },
-            });
+        const variant = await prisma.variant.create({
+            data: {
+                productId: iphone.id,
+                color: color.name,
+                storage: '256GB',
+                priceOverride: 127400,
+                imageUrl: color.img,
+            },
+        });
 
-            await prisma.emiPlan.createMany({
-                data: [
-                    { variantId: variant.id, monthlyAmount: Math.round(priceOverride / 3), tenureMonths: 3, interestRate: 0, cashbackAmount: 7500 },
-                    { variantId: variant.id, monthlyAmount: Math.round(priceOverride / 6), tenureMonths: 6, interestRate: 0, cashbackAmount: 7500 },
-                    { variantId: variant.id, monthlyAmount: Math.round(priceOverride / 12), tenureMonths: 12, interestRate: 0, cashbackAmount: 7500 },
-                    { variantId: variant.id, monthlyAmount: Math.round(priceOverride / 24), tenureMonths: 24, interestRate: 0, cashbackAmount: 7500 },
-                    { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.1) / 36), tenureMonths: 36, interestRate: 10.5, cashbackAmount: 7500 },
-                    { variantId: variant.id, monthlyAmount: Math.round((priceOverride * 1.15) / 48), tenureMonths: 48, interestRate: 10.5, cashbackAmount: 7500 },
-                ],
-            });
-        }
+        // Add 3 EMI plans per variant
+        await prisma.emiPlan.createMany({
+            data: [
+                { variantId: variant.id, monthlyAmount: 42467, tenureMonths: 3, interestRate: 0, cashbackAmount: 500 },
+                { variantId: variant.id, monthlyAmount: 21234, tenureMonths: 6, interestRate: 0, cashbackAmount: 750 },
+                { variantId: variant.id, monthlyAmount: 10617, tenureMonths: 12, interestRate: 0, cashbackAmount: 1000 },
+            ],
+        });
     }
 
-    // ── PRODUCT 2: Samsung Galaxy S25 Ultra ───────────────────────────────────
+    // ── PRODUCT 2: Samsung Galaxy S24 Ultra ───────────────────────────────────
     const samsung = await prisma.product.create({
         data: {
-            name: 'Samsung Galaxy S25 Ultra',
-            slug: 'samsung-s25-ultra',
-            description: 'Experience the next level of mobile innovation with AI integration and 200MP zoom.',
+            name: 'Samsung Galaxy S24 Ultra',
+            slug: 'samsung-s24-ultra',
+            description: 'The ultimate Galaxy experience with S Pen, 200MP camera, and stunning titanium build.',
             imageUrl: '/images/samsung-s24-ultra.png',
             mrp: 134999,
-            price: 124999,
-            badge: 'NEW',
+            price: 119999,
+            badge: 'HOT',
         },
     });
 
@@ -75,55 +69,56 @@ async function main() {
             productId: samsung.id,
             color: 'Titanium Black',
             storage: '256GB',
-            priceOverride: 124999,
+            priceOverride: 119999,
             imageUrl: '/images/samsung-s24-ultra.png',
         },
     });
 
     await prisma.emiPlan.createMany({
         data: [
-            { variantId: samsungVariant.id, monthlyAmount: 41666, tenureMonths: 3, interestRate: 0, cashbackAmount: 6500 },
-            { variantId: samsungVariant.id, monthlyAmount: 20833, tenureMonths: 6, interestRate: 0, cashbackAmount: 6500 },
-            { variantId: samsungVariant.id, monthlyAmount: 10417, tenureMonths: 12, interestRate: 0, cashbackAmount: 6500 },
+            { variantId: samsungVariant.id, monthlyAmount: 40000, tenureMonths: 3, interestRate: 0, cashbackAmount: 500 },
+            { variantId: samsungVariant.id, monthlyAmount: 20000, tenureMonths: 6, interestRate: 0, cashbackAmount: 750 },
+            { variantId: samsungVariant.id, monthlyAmount: 10000, tenureMonths: 12, interestRate: 0, cashbackAmount: 1000 },
         ],
     });
 
-    // ── PRODUCT 3: OnePlus 13 ─────────────────────────────────────────────────
-    const oneplus = await prisma.product.create({
+    // ── PRODUCT 3: Google Pixel 9 Pro ─────────────────────────────────────────
+    const pixel = await prisma.product.create({
         data: {
-            name: 'OnePlus 13',
-            slug: 'oneplus-13',
-            description: 'Fast and smooth performance with Hasselblad camera for mobile and ultra-fast charging.',
+            name: 'Google Pixel 9 Pro',
+            slug: 'google-pixel-9-pro',
+            description: 'Google\'s most advanced Pixel with Tensor G4 chip, Magic Eraser, and Pro-level cameras.',
             imageUrl: '/images/google-pixel-9-pro.png',
-            mrp: 79999,
-            price: 69999,
-            badge: 'HOT',
+            mrp: 109999,
+            price: 99999,
+            badge: 'SALE',
         },
     });
 
-    const oneplusVariant = await prisma.variant.create({
+    const pixelVariant = await prisma.variant.create({
         data: {
-            productId: oneplus.id,
-            color: 'Arctic Dawn',
-            storage: '256GB',
-            priceOverride: 69999,
+            productId: pixel.id,
+            color: 'Obsidian',
+            storage: '128GB',
+            priceOverride: 99999,
             imageUrl: '/images/google-pixel-9-pro.png',
         },
     });
 
     await prisma.emiPlan.createMany({
         data: [
-            { variantId: oneplusVariant.id, monthlyAmount: 23333, tenureMonths: 3, interestRate: 0, cashbackAmount: 4000 },
-            { variantId: oneplusVariant.id, monthlyAmount: 11667, tenureMonths: 6, interestRate: 0, cashbackAmount: 4000 },
+            { variantId: pixelVariant.id, monthlyAmount: 33333, tenureMonths: 3, interestRate: 0, cashbackAmount: 300 },
+            { variantId: pixelVariant.id, monthlyAmount: 16667, tenureMonths: 6, interestRate: 0, cashbackAmount: 500 },
+            { variantId: pixelVariant.id, monthlyAmount: 8333, tenureMonths: 12, interestRate: 0, cashbackAmount: 750 },
         ],
     });
 
-    console.log('Seeding complete!');
+    console.log('✅ Seeding complete!');
 }
 
 main()
     .catch((e) => {
-        console.error('Seed error:', e);
+        console.error('❌ Seed error:', e);
         process.exit(1);
     })
     .finally(async () => {
