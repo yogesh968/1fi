@@ -17,7 +17,15 @@ app.use('/api/products', productRoutes);
 app.use('/api/emi-plans', emiRoutes);
 app.use('/api/orders', orderRoutes);
 
-// Health check
+// Health check & Welcome
+app.get('/', (req, res) => {
+    res.json({
+        message: '🚀 PRIME STORE API is Live',
+        status: 'production',
+        docs: '/api/products'
+    });
+});
+
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
