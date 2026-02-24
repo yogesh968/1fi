@@ -7,10 +7,19 @@ export default function HomePage() {
     const [products, setProducts] = useState([])
     const [loading, setLoading] = useState(true)
     const [searchTerm, setSearchTerm] = useState('')
+    const [selectedBrands, setSelectedBrands] = useState([])
+    const [priceRange, setPriceRange] = useState([69999, 127400])
 
     useEffect(() => {
         api.getAllProducts()
-            .then(data => setProducts(data))
+            .then(data => {
+                setProducts(data)
+                // Find min/max prices for initial range
+                if (data.length > 0) {
+                    const prices = data.map(p => p.price)
+                    setPriceRange([Math.min(...prices), Math.max(...prices)])
+                }
+            })
             .catch(err => console.error(err))
             .finally(() => setLoading(false))
     }, [])
@@ -18,9 +27,20 @@ export default function HomePage() {
     const formatCurrency = (amount) =>
         new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount)
 
-    const filteredProducts = products.filter(p =>
-        p.name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    const toggleBrand = (brand) => {
+        setSelectedBrands(prev =>
+            prev.includes(brand) ? prev.filter(b => b !== brand) : [...prev, brand]
+        )
+    }
+
+    const filteredProducts = products.filter(p => {
+        const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase())
+        const matchesBrand = selectedBrands.length === 0 || selectedBrands.some(brand => p.name.toLowerCase().includes(brand.toLowerCase()))
+        const matchesPrice = p.price >= priceRange[0] && p.price <= priceRange[1]
+        return matchesSearch && matchesBrand && matchesPrice
+    })
+
+    const brands = ['Apple', 'Samsung', 'OnePlus']
 
     return (
         <div className="min-h-screen bg-[#fafafa]">
@@ -43,9 +63,9 @@ export default function HomePage() {
                     </div>
                 </div>
 
-                <div className="flex gap-12">
+                <div className="flex flex-col lg:flex-row gap-12">
                     {/* Sidebar Filters */}
-                    <aside className="hidden lg:block w-64 flex-shrink-0 space-y-10">
+                    <aside className="w-full lg:w-64 flex-shrink-0 space-y-10">
                         <div>
                             <div className="flex items-center gap-2 mb-6 cursor-default">
                                 <svg className="w-4 h-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -58,10 +78,15 @@ export default function HomePage() {
                                 <div>
                                     <label className="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-4">Brand</label>
                                     <div className="space-y-3">
-                                        {['Apple', 'Samsung', 'OnePlus'].map(brand => (
+                                        {brands.map(brand => (
                                             <label key={brand} className="flex items-center gap-3 cursor-pointer group">
-                                                <input type="checkbox" className="w-5 h-5 border-2 border-gray-300 rounded focus:ring-0 accent-black cursor-pointer" />
-                                                <span className="text-[14px] font-medium text-gray-600 group-hover:text-black transition-colors">{brand}</span>
+                                                <input
+                                                    type="checkbox"
+                                                    className="w-5 h-5 border-2 border-gray-300 rounded focus:ring-0 accent-black cursor-pointer"
+                                                    checked={selectedBrands.includes(brand)}
+                                                    onChange={() => toggleBrand(brand)}
+                                                />
+                                                <span className={`text-[14px] font-medium transition-colors ${selectedBrands.includes(brand) ? 'text-black' : 'text-gray-600 group-hover:text-black'}`}>{brand}</span>
                                             </label>
                                         ))}
                                     </div>
@@ -70,13 +95,23 @@ export default function HomePage() {
                                 <div>
                                     <label className="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-4">Price Range</label>
                                     <div className="flex items-center gap-2">
-                                        <input type="text" value="69999" readOnly className="w-full h-10 px-3 bg-white border border-gray-200 rounded-lg text-sm font-medium" />
+                                        <input
+                                            type="text"
+                                            value={priceRange[0]}
+                                            onChange={(e) => setPriceRange([parseInt(e.target.value) || 0, priceRange[1]])}
+                                            className="w-full h-10 px-3 bg-white border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-black"
+                                        />
                                         <span className="text-gray-400">−</span>
-                                        <input type="text" value="127400" readOnly className="w-full h-10 px-3 bg-white border border-gray-200 rounded-lg text-sm font-medium" />
+                                        <input
+                                            type="text"
+                                            value={priceRange[1]}
+                                            onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value) || 0])}
+                                            className="w-full h-10 px-3 bg-white border border-gray-200 rounded-lg text-sm font-medium focus:ring-1 focus:ring-black"
+                                        />
                                     </div>
                                     <div className="flex justify-between mt-2 px-1">
-                                        <span className="text-[10px] font-bold text-gray-400">₹69,999</span>
-                                        <span className="text-[10px] font-bold text-gray-400">₹1,27,400</span>
+                                        <span className="text-[10px] font-bold text-gray-400">Min: {formatCurrency(69999)}</span>
+                                        <span className="text-[10px] font-bold text-gray-400">Max: {formatCurrency(127400)}</span>
                                     </div>
                                 </div>
                             </div>
@@ -94,6 +129,16 @@ export default function HomePage() {
                         {loading ? (
                             <div className="space-y-6">
                                 {[1, 2, 3].map(i => <div key={i} className="skeleton h-64 rounded-3xl" />)}
+                            </div>
+                        ) : filteredProducts.length === 0 ? (
+                            <div className="py-20 text-center bg-white rounded-[32px] border border-gray-100">
+                                <p className="text-gray-400 font-medium">No products match your filters.</p>
+                                <button
+                                    onClick={() => { setSelectedBrands([]); setSearchTerm(''); setPriceRange([69999, 127400]) }}
+                                    className="mt-4 text-black font-bold underline"
+                                >
+                                    Clear all filters
+                                </button>
                             </div>
                         ) : (
                             <div className="space-y-6">
@@ -125,15 +170,19 @@ export default function HomePage() {
                                             <div className="space-y-4 mb-8">
                                                 <div>
                                                     <p className="text-[13px] font-medium text-gray-400 mb-1 flex items-center gap-1.5">
-                                                        EMI From <span className="text-xl font-black text-black tracking-tighter">₹2,842/month</span>
+                                                        EMI From <span className="text-xl font-black text-black tracking-tighter">
+                                                            {formatCurrency(Math.round(product.price / 45))} /month
+                                                        </span>
                                                     </p>
-                                                    <p className="text-[12px] font-bold text-gray-500">Downpayment: ₹2,548</p>
+                                                    <p className="text-[12px] font-bold text-gray-500">Downpayment: {formatCurrency(Math.round(product.price * 0.02))}</p>
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-[13px] font-medium text-gray-400">Price:</span>
                                                     <span className="text-lg font-black text-black">{formatCurrency(product.price)}</span>
                                                     <span className="text-sm text-gray-400 line-through font-medium">{formatCurrency(product.mrp)}</span>
-                                                    <span className="text-[13px] font-bold text-emerald-600">6% Off</span>
+                                                    <span className="text-[13px] font-bold text-emerald-600">
+                                                        {Math.round(((product.mrp - product.price) / product.mrp) * 100)}% Off
+                                                    </span>
                                                 </div>
                                             </div>
 

@@ -103,7 +103,7 @@ export default function ProductPage() {
 
     const effectivePrice = selectedVariant?.priceOverride ?? product?.price
     const discountPercent = Math.round(((product.mrp - effectivePrice) / product.mrp) * 100)
-    const downpayment = Math.round(effectivePrice * 0.02) // Example downpayment logic (2%)
+    const downpayment = Math.round(effectivePrice * 0.02)
 
     return (
         <div className="min-h-screen bg-white">
@@ -175,15 +175,17 @@ export default function ProductPage() {
                             />
 
                             <div className="space-y-4">
-                                <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <svg className="w-4 h-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                    </svg>
                                     <h3 className="text-sm font-black uppercase tracking-widest text-black">Choose your EMI plan</h3>
                                 </div>
 
                                 <div className="space-y-4">
                                     {emiLoading ? (
                                         <div className="flex flex-col gap-4">
-                                            <div className="skeleton h-24 rounded-2xl" />
-                                            <div className="skeleton h-24 rounded-2xl" />
+                                            {[1, 2, 3, 4].map(i => <div key={i} className="skeleton h-24 rounded-2xl" />)}
                                         </div>
                                     ) : (
                                         emiPlans.map((plan) => (
@@ -196,6 +198,7 @@ export default function ProductPage() {
                                         ))
                                     )}
                                 </div>
+                                <p className="text-[11px] font-bold text-gray-400 pl-1 mt-2">EMI starts from next billing cycle</p>
                             </div>
                         </div>
 
@@ -217,23 +220,30 @@ export default function ProductPage() {
                                 )}
                             </Button>
 
-                            {/* Trust Badges */}
                             <div className="flex items-center justify-center gap-8 pt-4">
-                                <div className="flex flex-col items-center gap-1">
-                                    <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                                <div className="flex items-center gap-2">
+                                    <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                     </svg>
-                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">Secure checkout</span>
+                                    <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest text-center">Secure checkout</span>
                                 </div>
-                                <div className="flex flex-col items-center gap-1">
-                                    <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <div className="flex items-center gap-2">
+                                    <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                                     </svg>
-                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">Backed by mutual funds</span>
+                                    <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest text-center">Backed by mutual funds</span>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+
+                {/* About Section */}
+                <div className="mt-32 pt-16 border-t border-gray-100">
+                    <h2 className="text-2xl font-black text-black mb-6">About {product.name}</h2>
+                    <p className="text-lg text-gray-500 leading-relaxed font-medium">
+                        {product.description}
+                    </p>
                 </div>
 
                 <ConfirmModal
