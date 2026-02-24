@@ -1,0 +1,47 @@
+const BASE_URL = import.meta.env.VITE_API_URL || '/api'
+
+const handleResponse = async (res) => {
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        throw new Error(err.message || `HTTP error ${res.status}`)
+    }
+    return res.json()
+}
+
+export const api = {
+    getAllProducts: async () => {
+        const data = await handleResponse(await fetch(`${BASE_URL}/products`))
+        return data.data
+    },
+
+    getProductBySlug: async (slug) => {
+        const data = await handleResponse(await fetch(`${BASE_URL}/products/${slug}`))
+        return data.data
+    },
+
+    getProductVariants: async (slug) => {
+        const data = await handleResponse(await fetch(`${BASE_URL}/products/${slug}/variants`))
+        return data.data
+    },
+
+    getEmiPlans: async (variantId) => {
+        const data = await handleResponse(await fetch(`${BASE_URL}/emi-plans/${variantId}`))
+        return data.data
+    },
+
+    createOrder: async (variantId, emiPlanId) => {
+        const data = await handleResponse(await fetch(`${BASE_URL}/orders`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ variantId, emiPlanId })
+        }))
+        return data.data
+    },
+
+    getOrders: async () => {
+        const data = await handleResponse(await fetch(`${BASE_URL}/orders`))
+        return data.data
+    }
+}
+
+export default api
