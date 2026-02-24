@@ -13,6 +13,17 @@ export default function OrdersPage() {
             .finally(() => setLoading(false))
     }, [])
 
+    const handleCancel = async (orderId) => {
+        if (!window.confirm('Are you sure you want to cancel this order?')) return;
+        try {
+            await api.cancelOrder(orderId);
+            setOrders(orders.map(o => o.id === orderId ? { ...o, status: 'CANCELLED' } : o));
+        } catch (err) {
+            console.error(err);
+            alert('Failed to cancel order');
+        }
+    }
+
     const formatCurrency = (amount) =>
         new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount)
 
@@ -22,7 +33,7 @@ export default function OrdersPage() {
             <main className="max-w-screen-md mx-auto px-6 pt-24 pb-20">
                 <div className="mb-12">
                     <h1 className="text-3xl font-semibold text-black tracking-tight mb-2">My Orders</h1>
-                    <p className="text-gray-500 text-sm">{orders.length} subscriptions active</p>
+                    <p className="text-gray-500 text-sm">{orders.filter(o => o.status !== 'CANCELLED').length} subscriptions active</p>
                 </div>
 
                 {loading ? (
@@ -48,24 +59,40 @@ export default function OrdersPage() {
                                         </div>
                                     </div>
                                     <div className="text-right">
-                                        <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-1 rounded">Confirmed</span>
+                                        <span className={`text-[11px] font-bold uppercase tracking-wider px-2 py-1 rounded ${order.status === 'CANCELLED'
+                                                ? 'text-red-600 bg-red-50'
+                                                : 'text-blue-600 bg-blue-50'
+                                            }`}>
+                                            {order.status}
+                                        </span>
                                         <p className="text-[11px] text-gray-400 mt-2 font-medium">#{order.orderNumber}</p>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-10 pt-6 border-t border-gray-50">
-                                    <div>
-                                        <label className="text-[11px] font-medium text-gray-400 uppercase tracking-wider block mb-1">Monthly</label>
-                                        <p className="text-md font-semibold text-black">{formatCurrency(order.monthlySchedule)}</p>
+                                <div className="flex items-center justify-between pt-6 border-t border-gray-50">
+                                    <div className="flex items-center gap-10">
+                                        <div>
+                                            <label className="text-[11px] font-medium text-gray-400 uppercase tracking-wider block mb-1">Monthly</label>
+                                            <p className="text-md font-semibold text-black">{formatCurrency(order.monthlySchedule)}</p>
+                                        </div>
+                                        <div>
+                                            <label className="text-[11px] font-medium text-gray-400 uppercase tracking-wider block mb-1">Duration</label>
+                                            <p className="text-md font-semibold text-black">{order.tenure} Months</p>
+                                        </div>
+                                        <div className="hidden sm:block">
+                                            <label className="text-[11px] font-medium text-gray-400 uppercase tracking-wider block mb-1">Started</label>
+                                            <p className="text-md font-semibold text-black">{new Date(order.createdAt).toLocaleDateString()}</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <label className="text-[11px] font-medium text-gray-400 uppercase tracking-wider block mb-1">Duration</label>
-                                        <p className="text-md font-semibold text-black">{order.tenure} Months</p>
-                                    </div>
-                                    <div>
-                                        <label className="text-[11px] font-medium text-gray-400 uppercase tracking-wider block mb-1">Started</label>
-                                        <p className="text-md font-semibold text-black">{new Date(order.createdAt).toLocaleDateString()}</p>
-                                    </div>
+
+                                    {order.status !== 'CANCELLED' && (
+                                        <button
+                                            onClick={() => handleCancel(order.id)}
+                                            className="text-[11px] font-bold text-gray-400 hover:text-red-600 uppercase tracking-wider transition-colors"
+                                        >
+                                            Cancel Order
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         ))}

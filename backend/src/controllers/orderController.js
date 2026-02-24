@@ -58,4 +58,22 @@ const getAllOrders = async (req, res, next) => {
     }
 };
 
-module.exports = { createOrder, getAllOrders };
+// PATCH /api/orders/:id/cancel
+const cancelOrder = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const order = await prisma.order.update({
+            where: { id },
+            data: { status: 'CANCELLED' },
+            include: {
+                variant: { include: { product: true } },
+                emiPlan: true
+            }
+        });
+        res.json({ success: true, data: order });
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { createOrder, getAllOrders, cancelOrder };

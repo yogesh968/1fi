@@ -41,6 +41,14 @@ export const api = {
     getOrders: async () => {
         const data = await handleResponse(await fetch(`${BASE_URL}/orders`))
         return data.data
+    },
+
+    cancelOrder: async (orderId) => {
+        const data = await handleResponse(await fetch(`${BASE_URL}/orders/${orderId}/cancel`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' }
+        }))
+        return data.data
     }
 }
 
