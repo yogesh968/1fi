@@ -105,12 +105,18 @@ export default function ProductPage() {
     const discountPercent = Math.round(((product.mrp - effectivePrice) / product.mrp) * 100)
     const downpayment = Math.round(effectivePrice * 0.02)
 
+    // Detail images mapping for iPhone colors
+    const detailImages = {
+        'Orange': '/images/iphone-orange-detail.png',
+        'White': '/images/iphone-white-detail.png',
+        'Blue': '/images/iphone-blue-detail.png'
+    }
+
     // Define images for the current view
     const productImages = [
         selectedVariant?.imageUrl || product?.imageUrl,
-        // Detail/Side image for White Titanium iPhone 17 Pro
-        (product?.slug === 'iphone-17-pro' && selectedVariant?.color === 'White')
-            ? 'https://www.apple.com/v/iphone-16-pro/c/images/overview/action-button/hw_action_button__d9yvpx0v7e8y_large.jpg'
+        (product?.slug === 'iphone-17-pro' && selectedVariant?.color && detailImages[selectedVariant.color])
+            ? detailImages[selectedVariant.color]
             : '/images/iphone-17-pro-silver.png'
     ]
 
@@ -200,7 +206,6 @@ export default function ProductPage() {
                                         </svg>
                                         <h3 className="text-[15px] font-bold uppercase tracking-tight text-black">Choose your EMI plan</h3>
                                     </div>
-                                    <span className="bg-blue-50 text-blue-600 text-[11px] font-bold px-2 py-1 rounded">0% Interest</span>
                                 </div>
 
                                 <div className="space-y-4 max-h-[380px] overflow-y-auto pr-2 custom-scrollbar transition-all">
@@ -249,7 +254,7 @@ export default function ProductPage() {
                         <div className="grid grid-cols-2 gap-8">
                             <div className="space-y-4">
                                 <div className="bg-gray-50 aspect-square rounded-2xl flex items-center justify-center p-8">
-                                    <img src={activeImage} className="w-full h-auto object-contain opacity-80" alt="" />
+                                    <img src={productImages[0]} className="w-full h-auto object-contain opacity-80" alt="" />
                                 </div>
                                 <p className="text-center text-sm font-medium text-black">{product.name}</p>
                             </div>
@@ -279,7 +284,7 @@ export default function ProductPage() {
                     plan={selectedPlan}
                     loading={placingOrder}
                 />
-            </main>
-        </div>
+            </main >
+        </div >
     )
 }

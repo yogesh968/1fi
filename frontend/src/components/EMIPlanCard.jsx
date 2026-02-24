@@ -37,9 +37,13 @@ export default function EMIPlanCard({ plan, isSelected, onSelect }) {
             </div>
 
             <div className="flex flex-col items-end">
-                {isZeroInterest && (
-                    <span className="bg-[#e8fbf3] text-[#2d9d78] text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
+                {isZeroInterest ? (
+                    <span className="bg-[#e8fbf3] text-[#2d9d78] text-[10px] font-bold px-2 py-1.5 rounded-lg uppercase tracking-wider whitespace-nowrap border border-[#2d9d78]/10 shadow-sm">
                         0% EMI
+                    </span>
+                ) : (
+                    <span className="bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-1.5 rounded-lg lowercase tracking-wider whitespace-nowrap border border-gray-200 shadow-sm">
+                        {plan.interestRate}% interest
                     </span>
                 )}
             </div>
