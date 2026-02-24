@@ -208,7 +208,7 @@ export default function ProductPage() {
                                     </div>
                                 </div>
 
-                                <div className="space-y-4 max-h-[380px] overflow-y-auto pr-2 custom-scrollbar transition-all">
+                                <div className="space-y-4 max-h-[350px] overflow-y-auto pr-3 custom-scrollbar transition-all">
                                     {emiLoading ? (
                                         <div className="flex flex-col gap-4">
                                             {[1, 2, 3, 4].map(i => <div key={i} className="skeleton h-24 rounded-2xl" />)}

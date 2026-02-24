@@ -94,18 +94,24 @@ body {
 
 /* Custom Minimalist Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+  background: #f9f9f9;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #e5e5e7;
+  background: #d1d1d6;
   border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #d2d2d7;
+  background: #a1a1a6;
+}
+
+/* Firefox support */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d1d6 #f9f9f9;
 }
