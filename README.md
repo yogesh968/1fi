@@ -1,22 +1,19 @@
-# 💎 PRIME STORE — Elite Ownership Platform
+# 1Fi EMI Store 
+---
 
-> A production-grade luxury hardware acquisition platform built with **React + Vite**, **Node.js + Express**, and **MongoDB Atlas + Prisma**.
+##  Features
+
+- **Bespoke Product Experience**: Dynamic product pages at `/products/:slug` with high-end studio imagery.
+- **Hardware Configurator**: Luxury variant selector for storage and finishes.
+- **Elite EMI Plans**: Multi-tenure ownership plans with 0% interest and instant cashback.
+-  **Order Verification**: Full confirmation flow with a dedicated "Order Success" portal.
+- **Cloud Database**: Integrated with **MongoDB Atlas** for high-availability production storage.
+-  **Adaptive Luxury**: Fully responsive two-column desktop layout that elegantly stacks for mobile with a sticky CTA.
+- **Performance First**: Ultra-fast loading with shimmer skeletons and transition-aware UI.
 
 ---
 
-## ✨ Features
-
-- 🛍️ **Bespoke Product Experience**: Dynamic product pages at `/products/:slug` with high-end studio imagery.
-- 📦 **Hardware Configurator**: Luxury variant selector for storage and finishes.
-- 💳 **Elite EMI Plans**: Multi-tenure ownership plans with 0% interest and instant cashback.
-- 🔒 **Order Verification**: Full confirmation flow with a dedicated "Order Success" portal.
-- ☁️ **Cloud Database**: Integrated with **MongoDB Atlas** for high-availability production storage.
-- 📱 **Adaptive Luxury**: Fully responsive two-column desktop layout that elegantly stacks for mobile with a sticky CTA.
-- ⚡ **Performance First**: Ultra-fast loading with shimmer skeletons and transition-aware UI.
-
----
-
-## 🗂️ Folder Structure
+##  Folder Structure
 
 ```
 1fi/
@@ -62,7 +59,7 @@
 
 ---
 
-## 🗄️ Database Schema (MongoDB Atlas)
+##  Database Schema (MongoDB Atlas)
 
 ```prisma
 Product
@@ -80,7 +77,7 @@ Order [tracks purchases]
 
 ---
 
-## 🔌 API Endpoints
+##  API Endpoints
 
 | Method | Endpoint                          | Description                     |
 |--------|-----------------------------------|---------------------------------|
@@ -92,7 +89,7 @@ Order [tracks purchases]
 
 ---
 
-## 🚀 Environment & Setup
+## Environment & Setup
 
 ### 1. Backend Configuration (`backend/.env`)
 ```env
@@ -126,25 +123,8 @@ cd frontend && npm run dev
 
 ---
 
-## 🎬 Demo Video Script (2–3 Minutes)
-
-**[0:00–0:15] Intro: The Vision**
-> "Welcome to PRIME STORE — a state-of-the-art acquisition platform for elite hardware. This isn't just a store; it's a seamless ownership experience built on the MERN stack with Prisma and MongoDB Atlas."
-
-**[0:15–0:45] Visual Interaction**
-> "Notice the bespoke Product Showcase. We use hyper-realistic imagery and the Outfit font to create a luxury tech aesthetic. On the left, we have floating technical tags; on the right, the configuration panel."
-
-**[0:45–1:15] Configuration & Logic**
-> "As I switch between 256GB and 512GB finishes, the backend instantly recalculates EMI tenures. We feature 0% interest plans highlighted with high-contrast emerald green for better conversion."
-
-**[1:15–1:45] The Order Flow**
-> "When a user selects a plan, we don't just 'buy' — we confirm. Clicking 'Proceed' triggers our custom verification modal, ensuring the user understands their monthly schedule before our MongoDB-backed order service locks it in."
-
-**[1:45–2:15] Backend & Data Integrity**
-> "Driven by MongoDB Atlas, the system tracks variants and orders in real-time. Our Prisma schema ensures type-safety across the entire infrastructure, making it ready for high-scale production."
-
-**[2:15–2:30] Closing**
-> "PRIME STORE — Precision engineered software for premium hardware. Ready for deployment."
+## 🎬 Demo Video 
+https://drive.google.com/file/d/1G3f98eThNFLpYX9SLIO5jxml09y-90Mn/view?usp=sharing
 
 ---
 
@@ -162,6 +142,3 @@ cd frontend && npm run dev
 
 ---
 
-## 📄 License
-
-MIT (2026) | Generated for Yogkumar Production
