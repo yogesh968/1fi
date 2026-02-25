@@ -73,18 +73,32 @@ async function main() {
             description: 'The ultimate Galaxy experience with S Pen and 200MP camera.',
         },
     });
-    for (const sStorage of ['256GB', '512GB']) {
-        const sPrice = sStorage === '512GB' ? 129999 : 119999;
-        const sVariant = await prisma.variant.create({ data: { productId: samsung.id, color: 'Titanium Black', storage: sStorage, priceOverride: sPrice, imageUrl: '/images/samsung-s24-ultra.png' } });
-        await prisma.emiPlan.createMany({
-            data: [
-                { variantId: sVariant.id, monthlyAmount: Math.round(sPrice / 3), tenureMonths: 3, interestRate: 0, cashbackAmount: 1000 },
-                { variantId: sVariant.id, monthlyAmount: Math.round(sPrice / 6), tenureMonths: 6, interestRate: 0, cashbackAmount: 1500 },
-                { variantId: sVariant.id, monthlyAmount: Math.round((sPrice * 1.05) / 12), tenureMonths: 12, interestRate: 5, cashbackAmount: 2000 },
-                { variantId: sVariant.id, monthlyAmount: Math.round((sPrice * 1.105) / 24), tenureMonths: 24, interestRate: 10.5, cashbackAmount: 3000 },
-                { variantId: sVariant.id, monthlyAmount: Math.round((sPrice * 1.15) / 36), tenureMonths: 36, interestRate: 15, cashbackAmount: 4000 },
-            ]
-        });
+    for (const color of ['Titanium Black', 'Titanium Silver Blue']) {
+        for (const sStorage of ['256GB', '512GB', '1TB']) {
+            const sPrice = sStorage === '1TB' ? 149999 : (sStorage === '512GB' ? 129999 : 119999);
+            const variantImg = color === 'Titanium Silver Blue' ? '/images/samsung-s24-titanium-silver-blue.png' : '/images/samsung-s24-ultra.png';
+
+            const sVariant = await prisma.variant.create({
+                data: {
+                    productId: samsung.id,
+                    color: color,
+                    storage: sStorage,
+                    priceOverride: sPrice,
+                    imageUrl: variantImg
+                }
+            });
+
+            await prisma.emiPlan.createMany({
+                data: [
+                    { variantId: sVariant.id, monthlyAmount: Math.round(sPrice / 3), tenureMonths: 3, interestRate: 0, cashbackAmount: 1000 },
+                    { variantId: sVariant.id, monthlyAmount: Math.round(sPrice / 6), tenureMonths: 6, interestRate: 0, cashbackAmount: 1500 },
+                    { variantId: sVariant.id, monthlyAmount: Math.round((sPrice * 1.05) / 12), tenureMonths: 12, interestRate: 5, cashbackAmount: 2000 },
+                    { variantId: sVariant.id, monthlyAmount: Math.round((sPrice * 1.105) / 24), tenureMonths: 24, interestRate: 10.5, cashbackAmount: 3000 },
+                    { variantId: sVariant.id, monthlyAmount: Math.round((sPrice * 1.15) / 36), tenureMonths: 36, interestRate: 15, cashbackAmount: 4000 },
+                    { variantId: sVariant.id, monthlyAmount: Math.round((sPrice * 1.25) / 60), tenureMonths: 60, interestRate: 25, cashbackAmount: 6000 },
+                ]
+            });
+        }
     }
 
     // Google Pixel 9 Pro

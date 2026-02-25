@@ -121,13 +121,16 @@ export default function ProductPage() {
             'White': '/images/iphone-white-detail.png',
             'Blue': '/images/iphone-blue-detail.png'
         },
-        'samsung-s24-ultra': '/images/samsung-s24-ultra-detail.png',
+        'samsung-s24-ultra': {
+            'Titanium Black': '/images/samsung-s24-ultra-detail.png',
+            'Titanium Silver Blue': '/images/samsung-s24-titanium-silver-blue-detail.png'
+        },
         'google-pixel-9-pro': '/images/google-pixel-9-pro-detail.png'
     }
 
     // Define images for the current view
-    const currentDetailImg = product?.slug === 'iphone-17-pro'
-        ? detailImages['iphone-17-pro'][selectedVariant?.color]
+    const currentDetailImg = typeof detailImages[product?.slug] === 'object'
+        ? detailImages[product?.slug][selectedVariant?.color]
         : detailImages[product?.slug]
 
     const productImages = [
