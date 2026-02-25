@@ -108,18 +108,27 @@ async function main() {
             description: 'Google\'s most advanced Pixel with Tensor G4 chip.',
         },
     });
-    for (const pStorage of ['512GB', '256GB', '128GB']) {
-        const pPrice = pStorage === '128GB' ? 99999 : (pStorage === '256GB' ? 109999 : 119999);
-        const pVariant = await prisma.variant.create({ data: { productId: pixel.id, color: 'Obsidian', storage: pStorage, priceOverride: pPrice, imageUrl: '/images/google-pixel-9-pro.png' } });
-        await prisma.emiPlan.createMany({
-            data: [
-                { variantId: pVariant.id, monthlyAmount: Math.round(pPrice / 3), tenureMonths: 3, interestRate: 0, cashbackAmount: 800 },
-                { variantId: pVariant.id, monthlyAmount: Math.round(pPrice / 6), tenureMonths: 6, interestRate: 0, cashbackAmount: 1200 },
-                { variantId: pVariant.id, monthlyAmount: Math.round((pPrice * 1.105) / 12), tenureMonths: 12, interestRate: 10.5, cashbackAmount: 1800 },
-                { variantId: pVariant.id, monthlyAmount: Math.round((pPrice * 1.15) / 24), tenureMonths: 24, interestRate: 15, cashbackAmount: 2500 },
-                { variantId: pVariant.id, monthlyAmount: Math.round((pPrice * 1.20) / 36), tenureMonths: 36, interestRate: 20, cashbackAmount: 3500 },
-            ]
-        });
+    const pixelColors = [
+        { name: 'Obsidian', img: '/images/google-pixel-9-pro.png' },
+        { name: 'Hazel', img: '/images/google-pixel-9-pro-hazel.png' },
+    ];
+    for (const pColor of pixelColors) {
+        for (const pStorage of ['128GB', '256GB', '512GB']) {
+            const pPrice = pStorage === '128GB' ? 99999 : (pStorage === '256GB' ? 109999 : 119999);
+            const pVariant = await prisma.variant.create({
+                data: { productId: pixel.id, color: pColor.name, storage: pStorage, priceOverride: pPrice, imageUrl: pColor.img }
+            });
+            await prisma.emiPlan.createMany({
+                data: [
+                    { variantId: pVariant.id, monthlyAmount: Math.round(pPrice / 3), tenureMonths: 3, interestRate: 0, cashbackAmount: 800 },
+                    { variantId: pVariant.id, monthlyAmount: Math.round(pPrice / 6), tenureMonths: 6, interestRate: 0, cashbackAmount: 1200 },
+                    { variantId: pVariant.id, monthlyAmount: Math.round((pPrice * 1.105) / 12), tenureMonths: 12, interestRate: 10.5, cashbackAmount: 1800 },
+                    { variantId: pVariant.id, monthlyAmount: Math.round((pPrice * 1.15) / 24), tenureMonths: 24, interestRate: 15, cashbackAmount: 2500 },
+                    { variantId: pVariant.id, monthlyAmount: Math.round((pPrice * 1.20) / 36), tenureMonths: 36, interestRate: 20, cashbackAmount: 3500 },
+                    { variantId: pVariant.id, monthlyAmount: Math.round((pPrice * 1.25) / 60), tenureMonths: 60, interestRate: 25, cashbackAmount: 5000 },
+                ]
+            });
+        }
     }
 
     console.log('✅ Seeding complete with specific 0%, 5%, and 10.5% interest plans');

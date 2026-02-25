@@ -125,7 +125,10 @@ export default function ProductPage() {
             'Titanium Black': '/images/samsung-s24-ultra-detail.png',
             'Titanium Silver Blue': '/images/samsung-s24-titanium-silver-blue-detail.png'
         },
-        'google-pixel-9-pro': '/images/google-pixel-9-pro-detail.png'
+        'google-pixel-9-pro': {
+            'Obsidian': '/images/google-pixel-9-pro-detail.png',
+            'Hazel': '/images/google-pixel-9-pro-hazel-detail.png'
+        }
     }
 
     // Define images for the current view
