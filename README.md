@@ -1,17 +1,74 @@
-# 1Fi EMI Store 
+# 1Fi Full Stack Developer Assignment  
+**Project: 1Fi EMI Store**
+
+A full-stack web application that displays premium smartphones with multiple EMI plans backed by mutual funds. The app fetches dynamic product, pricing, images, variants, and EMI plans from a backend API connected to a database and renders them in a responsive, user-friendly interface.
+
+
+## Core Functionality
+
+The product page includes:
+
+1. Product Details  
+   - Name  
+   - Variant (Storage / Color)  
+   - MRP & Price  
+   - Product Image  
+
+2. EMI Plans (Selectable)  
+   - Monthly Amount  
+   - Tenure (Months)  
+   - Interest Rate  
+   - Cashback (if applicable)  
+
+3. Checkout Flow  
+   - Select EMI Plan  
+   - Proceed Button  
+   - Order Success Page  
+
+The web app:
+
+- Loads data from backend APIs (no hardcoded data)  
+- Has unique URLs for each product  
+  - /products/iphone-17-pro  
+  - /products/samsung-s24-ultra  
+- Contains at least 3 products  
+- Each product has 2+ variants  
+
 ---
 
-##  Features
+## Features
 
-- **Bespoke Product Experience**: Dynamic product pages at `/products/:slug` with high-end studio imagery.
-- **Hardware Configurator**: Luxury variant selector for storage and finishes.
-- **Elite EMI Plans**: Multi-tenure ownership plans with 0% interest and instant cashback.
--  **Order Verification**: Full confirmation flow with a dedicated "Order Success" portal.
-- **Cloud Database**: Integrated with **MongoDB Atlas** for high-availability production storage.
--  **Adaptive Luxury**: Fully responsive two-column desktop layout that elegantly stacks for mobile with a sticky CTA.
-- **Performance First**: Ultra-fast loading with shimmer skeletons and transition-aware UI.
+- Dynamic product pages at `/products/:slug`  
+- Hardware configurator (color & storage)  
+- EMI plans with tenure, interest & cashback  
+- Order confirmation flow  
+- MongoDB Atlas database  
+- Fully responsive UI  
+- Fast loading with skeleton loaders  
 
 ---
+
+## Tech Stack
+
+Frontend  
+- React (Vite)  
+- CSS  
+
+Backend  
+- Node.js  
+- Express.js  
+- Prisma ORM  
+
+Database  
+- MongoDB Atlas  
+
+Deployment  
+- Frontend: Vercel  
+- Backend: Render  
+
+---
+
+## Folder Structure
 
 ##  Folder Structure
 
